@@ -56,6 +56,8 @@
 .username {
     font-size: 14px;
     font-weight: 500;
+    white-space: nowrap;
+    display: inline-block;
 }
 
 /* Dropdown menu */
@@ -97,57 +99,78 @@
     .sidebar {
         width: 100%;
         height: auto;
-        position: relative;
+        position: fixed;
+        bottom: 0;
+        left: 0;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-around;
+        align-items: center;
         padding: 10px;
+        background-color: #1e1e2f;
+        z-index: 100;
     }
 
     .logo {
-        position: absolute;
+        position: fixed;
         top: 10px;
         left: 10px;
-        display: flex;
-        gap: 5px;
         margin-bottom: 0;
     }
 
     .sidebar-footer {
-        position: absolute;
+        position: fixed;
         top: 10px;
         right: 10px;
-        margin-top: 0;
         padding: 0;
+        margin-top: 0;
+        border-top: none;
+        background: none;
     }
 
     .menu-items {
-        display: none; /* Hide sidebar menu items on mobile */
-    }
-
-    /* Bottom navigation bar for mobile */
-    .sidebar-footer {
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
-        padding: 10px;
-        background-color: #1e1e2f;
-        position: fixed;
-        bottom: 0;
+        display: none;
     }
 
     .user-button {
         padding: 10px;
     }
 
-    /* Hide the username on mobile */
     .username {
-        display: none;
+        display: none !important;
     }
 }
 
 /* Desktop/PC view */
 @media (min-width: 769px) {
+    .sidebar {
+        flex-direction: column;
+        width: 200px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 20px;
+    }
+
+    .menu-items {
+        display: block;
+    }
+
+    .logo {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 30px;
+    }
+
+    .sidebar-footer {
+        position: relative;
+        margin-top: auto;
+        padding: 20px;
+        border-top: 1px solid #333;
+    }
+
     .username {
-        display: inline-block; /* Show the username on desktop */
+        display: inline-block !important;
     }
 }
