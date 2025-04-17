@@ -1,0 +1,153 @@
+/* Sidebar container */
+.sidebar {
+    width: 200px;
+    height: 100vh;
+    background-color: #1e1e2f;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.logo h2 {
+    font-size: 22px;
+    margin: 0;
+}
+
+/* Sidebar menu items */
+.menu-items {
+    flex-grow: 1;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 20px;
+    border-top: 1px solid #333;
+    position: relative;
+}
+
+.user-button {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: white;
+    width: 100%;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.username {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Dropdown menu */
+.dropdown {
+    position: absolute;
+    bottom: 60px;
+    left: 20px;
+    background-color: #222;
+    border-radius: 8px;
+    padding: 10px;
+    width: 150px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+}
+
+.dropdown button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown button:hover {
+    background-color: #333;
+    border-radius: 4px;
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px;
+    }
+
+    .logo {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        display: flex;
+        gap: 5px;
+        margin-bottom: 0;
+    }
+
+    .sidebar-footer {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        margin-top: 0;
+        padding: 0;
+    }
+
+    .menu-items {
+        display: none; /* Hide sidebar menu items on mobile */
+    }
+
+    /* Bottom navigation bar for mobile */
+    .sidebar-footer {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        padding: 10px;
+        background-color: #1e1e2f;
+        position: fixed;
+        bottom: 0;
+    }
+
+    .user-button {
+        padding: 10px;
+    }
+
+    /* Hide the username on mobile */
+    .username {
+        display: none;
+    }
+}
+
+/* Desktop/PC view */
+@media (min-width: 769px) {
+    .username {
+        display: inline-block; /* Show the username on desktop */
+    }
+}
