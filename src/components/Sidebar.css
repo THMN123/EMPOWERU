@@ -27,6 +27,8 @@
 /* Sidebar menu items */
 .menu-items {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar-footer {
@@ -98,14 +100,14 @@
 @media (max-width: 768px) {
     .sidebar {
         width: 100%;
-        height: auto;
+        height: 60px;
         position: fixed;
         bottom: 0;
         left: 0;
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
-        padding: 10px;
+        padding: 0 10px;
         background-color: #1e1e2f;
         z-index: 100;
     }
@@ -115,6 +117,39 @@
         top: 10px;
         left: 10px;
         margin-bottom: 0;
+        z-index: 101;
+    }
+
+    .menu-items {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        flex: 1;
+        height: 100%;
+    }
+
+    .menu-items li {
+        margin: 0;
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .menu-items a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 12px;
+        color: white;
+        height: 100%;
+        justify-content: center;
+    }
+
+    .menu-items span {
+        display: none; /* Hide labels */
     }
 
     .sidebar-footer {
@@ -125,10 +160,7 @@
         margin-top: 0;
         border-top: none;
         background: none;
-    }
-
-    .menu-items {
-        display: none;
+        z-index: 101;
     }
 
     .user-button {
@@ -137,6 +169,16 @@
 
     .username {
         display: none !important;
+    }
+
+    /* Apply padding to the main content area */
+    .main-content {
+        padding-bottom: 60px; /* prevent bottom nav from overlapping content */
+        box-sizing: border-box;
+    }
+
+    body {
+        padding-bottom: 0 !important;
     }
 }
 
@@ -153,7 +195,8 @@
     }
 
     .menu-items {
-        display: block;
+        display: flex;
+        flex-direction: column;
     }
 
     .logo {
@@ -173,4 +216,16 @@
     .username {
         display: inline-block !important;
     }
+
+    body {
+        padding-left: 200px; /* make room for sidebar on desktop */
+    }
+}
+
+/* To prevent overflow when bottom bar is fixed */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
 }
