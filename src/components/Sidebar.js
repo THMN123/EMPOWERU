@@ -4,156 +4,175 @@ import {
   Home, PiggyBank, MessageCircle, User, 
   Lightbulb, LogOut, Settings, UserCircle 
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import './Sidebar.css';
 
-const DropdownMenu = ({ isOpen, onClose, triggerRef, isMobile }) => {
+const DropdownMenu = ({ isOpen, onClose, triggerRef }) => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && 
-          !dropdownRef.current.contains(event.target) &&
-          triggerRef.current && 
-          !triggerRef.current.contains(event.target)) {
+    const handleInteraction = (event) => {
+      const clickedOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(event.target);
+      const clickedOutsideTrigger = triggerRef.current && !triggerRef.current.contains(event.target);
+      
+      if (clickedOutsideDropdown && clickedOutsideTrigger) {
         onClose();
       }
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') onClose();
-      });
+      document.addEventListener('click', handleInteraction);
+      document.addEventListener('touchstart', handleInteraction);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('touchstart', handleInteraction);
     };
   }, [isOpen, onClose, triggerRef]);
 
-  if (!isOpen) return null;
-
   return (
-    <div 
+    <motion.div
       ref={dropdownRef}
-      className={`dropdown ${isMobile ? 'mobile-dropdown' : ''}`}
+      className="dropdown"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ 
+        opacity: isOpen ? 1 : 0,
+        y: isOpen ? 0 : -10
+      }}
+      transition={{ duration: 0.2 }}
       role="menu"
-      aria-orientation="vertical"
-      aria-labelledby="user-menu-button"
+      aria-hidden={!isOpen}
     >
-      <button 
-        role="menuitem"
+      <motion.button 
+        whileTap={{ scale: 0.95 }}
+        className="dropdown-item" 
         onClick={onClose}
-        className="dropdown-item"
       >
-        <UserCircle size={16} aria-hidden="true" /> 
+        <UserCircle size={18} />
         <span>Profile</span>
-      </button>
-      <button 
-        role="menuitem"
+      </motion.button>
+      <motion.button 
+        whileTap={{ scale: 0.95 }}
+        className="dropdown-item" 
         onClick={onClose}
-        className="dropdown-item"
       >
-        <Settings size={16} aria-hidden="true" /> 
+        <Settings size={18} />
         <span>Settings</span>
-      </button>
-      <button 
-        role="menuitem"
+      </motion.button>
+      <motion.button 
+        whileTap={{ scale: 0.95 }}
+        className="dropdown-item" 
         onClick={onClose}
-        className="dropdown-item"
       >
-        <LogOut size={16} aria-hidden="true" /> 
+        <LogOut size={18} />
         <span>Logout</span>
-      </button>
-    </div>
+      </motion.button>
+    </motion.div>
   );
 };
 
-const SidebarMenuButton = ({ icon: Icon, label, to }) => {
+const NavButton = ({ icon: Icon, label, to }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
 
   return (
-    <Link 
-      to={to} 
-      className={`sidebar-menu-button ${isActive ? 'active' : ''}`}
-      aria-current={isActive ? 'page' : undefined}
+    <motion.div
+      whileTap={{ scale: 0.9 }}
+      className="nav-button-wrapper"
     >
-      <Icon size={20} aria-hidden="true" />
-      <span className="menu-label">{label}</span>
-    </Link>
+      <Link 
+        to={to}
+        className={`nav-button ${isActive ? 'active' : ''}`}
+        aria-current={isActive ? 'page' : undefined}
+      >
+        <motion.div
+          animate={{
+            y: isActive ? -5 : 0
+          }}
+          transition={{ type: 'spring', stiffness: 500 }}
+        >
+          <Icon size={22} />
+        </motion.div>
+        <motion.span
+          animate={{
+            opacity: isActive ? 1 : 0.7
+          }}
+        >
+          {label}
+        </motion.span>
+        {isActive && (
+          <motion.div 
+            className="active-indicator"
+            layoutId="activeIndicator"
+            transition={{ type: 'spring', stiffness: 500 }}
+          />
+        )}
+      </Link>
+    </motion.div>
   );
 };
 
 const Sidebar = () => {
-  const [showMenu, setShowMenu] = useState(false);
-  const buttonRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownTriggerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' && window.innerWidth <= 768
+  );
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const mobile = window.innerWidth <= 768;
+      if (mobile !== isMobile) {
+        setIsMobile(mobile);
+      }
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const toggleDropdown = () => setShowMenu((prev) => !prev);
-  const closeDropdown = () => setShowMenu(false);
+  }, [isMobile]);
 
   return (
     <>
-      {/* Header with logo on left and avatar on right */}
-      <header className="sidebar-header">
-        <div className="logo">
-          <Lightbulb size={24} aria-hidden="true" />
-          <h2>EMPOWERU</h2>
-        </div>
-        
-        <div className="header-avatar">
-          <button
-            className="user-button"
-            ref={buttonRef}
-            onClick={toggleDropdown}
-            aria-expanded={showMenu}
-            aria-controls="user-dropdown-menu"
-            aria-haspopup="true"
-            id="user-menu-button"
+      <header className="app-header">
+        <motion.div 
+          className="logo"
+          whileHover={{ scale: 1.05 }}
+        >
+          <Lightbulb size={24} />
+          <h1>EMPOWERU</h1>
+        </motion.div>
+        <div className="user-controls">
+          <motion.button
+            ref={dropdownTriggerRef}
+            className="avatar-button"
+            onClick={() => setShowDropdown(!showDropdown)}
+            whileTap={{ scale: 0.9 }}
+            aria-expanded={showDropdown}
           >
-            <img 
-              src="https://i.pravatar.cc/30" 
-              alt="User Avatar" 
-              className="avatar" 
-              width="30"
-              height="30"
-              loading="lazy"
+            <motion.img 
+              src="https://i.pravatar.cc/40" 
+              alt="User" 
+              animate={{
+                scale: showDropdown ? 1.1 : 1
+              }}
+              transition={{ type: 'spring' }}
             />
-            {!isMobile && (
-              <span className="username" aria-hidden="true">
-                User
-              </span>
-            )}
-          </button>
-
+          </motion.button>
           <DropdownMenu 
-            isOpen={showMenu} 
-            onClose={closeDropdown} 
-            triggerRef={buttonRef}
-            isMobile={isMobile}
+            isOpen={showDropdown} 
+            onClose={() => setShowDropdown(false)}
+            triggerRef={dropdownTriggerRef}
           />
         </div>
       </header>
 
-      {/* Main sidebar/navigation */}
-      <aside className="sidebar" aria-label="Main navigation">
-        <nav className="menu-items" aria-label="Primary">
-          <SidebarMenuButton to="/" icon={Home} label="Home" />
-          <SidebarMenuButton to="/investments" icon={PiggyBank} label="Investments" />
-          <SidebarMenuButton to="/messages" icon={MessageCircle} label="Messages" />
-          <SidebarMenuButton to="/profile" icon={User} label="Profile" />
-        </nav>
-      </aside>
+      <nav className={`app-navigation ${isMobile ? 'mobile' : ''}`}>
+        <NavButton to="/" icon={Home} label="Home" />
+        <NavButton to="/investments" icon={PiggyBank} label="Invest" />
+        <NavButton to="/messages" icon={MessageCircle} label="Chat" />
+        <NavButton to="/profile" icon={User} label="Profile" />
+      </nav>
     </>
   );
 };
