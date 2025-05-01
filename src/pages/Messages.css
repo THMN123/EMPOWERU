@@ -7,7 +7,7 @@
   --text-light: #6b7280;
   --border-radius: 16px;
   --shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-  --nav-height: 60px; /* Match your navbar height */
+  --nav-height: 60px;
 }
 
 .messages-container {
@@ -227,6 +227,11 @@
   background: rgba(255,255,255,0.7);
 }
 
+.message-input input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 .send-button {
   width: 48px;
   height: 48px;
@@ -239,6 +244,11 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.send-button:focus {
+  outline: 2px solid var(--primary-light);
+  outline-offset: 2px;
 }
 
 /* Mobile Styles */
@@ -301,11 +311,13 @@
     padding: 1rem;
     box-shadow: 0 -2px 15px rgba(0,0,0,0.05);
     z-index: 1000;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
   }
 
   .message-input input {
     padding: 12px 20px;
     font-size: 1rem;
+    min-height: 50px;
   }
 
   .send-button {
@@ -339,11 +351,34 @@
   border-radius: 3px;
 }
 
-/* Mobile Tap Effects */
+/* Accessibility and Interactions */
 .conversation:active {
   transform: scale(0.98);
 }
 
+.conversation:focus {
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
 .send-button:active {
   transform: scale(0.9);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .message {
+    animation: none;
+  }
+  
+  .chat-window {
+    transition: none;
+  }
+}
+
+/* Backdrop Filter Fallback */
+@supports not (backdrop-filter: blur(10px)) {
+  .conversations-list,
+  .chat-window {
+    background: rgba(255, 255, 255, 0.95);
+  }
 }
