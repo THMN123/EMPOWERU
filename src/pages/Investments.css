@@ -1,0 +1,169 @@
+/* pages/Investments.css */
+.investments-container {
+  padding: 1rem;
+  padding-top: 90px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.portfolio-summary {
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: var(--border-radius);
+}
+
+.portfolio-summary h2 {
+  margin: 0 0 2rem;
+  color: var(--text);
+}
+
+.portfolio-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.7);
+  border-radius: 12px;
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.stat-content .label {
+  display: block;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+.stat-content .value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.5);
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab.active {
+  background: var(--primary);
+  color: white;
+}
+
+.investment-item {
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: var(--border-radius);
+}
+
+.investment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.status {
+  font-size: 0.9rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.status.active {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--secondary);
+}
+
+.status.completed {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+.investment-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.detail {
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.5);
+  border-radius: 12px;
+}
+
+.detail .label {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+.detail .value {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.return.active {
+  color: var(--secondary);
+}
+
+.return.completed {
+  color: var(--danger);
+}
+
+@media (max-width: 768px) {
+  .investments-container {
+    padding-top: 80px;
+    margin-left: 0;
+    max-width: 100%;
+  }
+  
+  .portfolio-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .investments-container {
+    margin-left: 220px;
+    max-width: calc(100% - 220px);
+    padding: 2rem;
+    padding-top: 100px;
+  }
+}
+
+.portfolio-summary,
+.investment-list {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}

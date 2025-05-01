@@ -1,0 +1,105 @@
+/* pages/Profile.css */
+.profile-container {
+    padding: 1rem;
+    padding-top: 90px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .profile-header {
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .avatar-section {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .profile-info h2 {
+    margin: 0 0 0.5rem;
+    color: var(--text);
+  }
+  
+  .stats {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-light);
+  }
+  
+  .details-section {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--border-radius);
+  }
+  
+  .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  
+  .detail-content {
+    flex: 1;
+  }
+  
+  .label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+  
+  .value {
+    font-weight: 500;
+    color: var(--text);
+  }
+  
+  .actions-section {
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+  }
+  
+  .profile-action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: rgba(255,255,255,0.7);
+    border: none;
+    border-radius: 12px;
+    color: var(--text);
+    cursor: pointer;
+  }
+  
+  .profile-action.logout {
+    color: var(--danger);
+  }
+  
+  @media (max-width: 768px) {
+    .avatar-section {
+      flex-direction: column;
+    }
+    
+    .profile-container {
+      padding-top: 80px;
+    }
+  }
