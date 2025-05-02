@@ -1,7 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { 
+  BrowserRouter as Router, 
+  Routes, 
+  Route, 
+  Navigate,
+  Outlet 
+} from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
-import PrivateRoute from './components/PrivateRoute';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import Investments from './pages/Investments';
@@ -26,35 +31,13 @@ function App() {
               <Route path="/reset-password" element={<ResetPassword />} />
 
               {/* Protected Routes */}
-              <Route path="/" element={
-                <PrivateRoute>
-                  <Home />
-                </PrivateRoute>
-              } />
-              
-              <Route path="/investments" element={
-                <PrivateRoute>
-                  <Investments />
-                </PrivateRoute>
-              } />
-
-              <Route path="/messages" element={
-                <PrivateRoute>
-                  <Messages />
-                </PrivateRoute>
-              } />
-
-              <Route path="/messages/:chatId" element={
-                <PrivateRoute>
-                  <Messages />
-                </PrivateRoute>
-              } />
-
-              <Route path="/profile" element={
-                <PrivateRoute>
-                  <Profile />
-                </PrivateRoute>
-              } />
+              <Route element={<PrivateLayout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/investments" element={<Investments />} />
+                <Route path="/messages" element={<Messages />} />
+                <Route path="/messages/:chatId" element={<Messages />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
 
               {/* Catch-all Route */}
               <Route path="*" element={<Navigate to="/" />} />
@@ -65,5 +48,14 @@ function App() {
     </AuthProvider>
   );
 }
+
+// Add this layout component
+const PrivateLayout = () => {
+  return (
+    <>
+      <Outlet />
+    </>
+  );
+};
 
 export default App;

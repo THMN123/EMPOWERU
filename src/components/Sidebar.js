@@ -1,76 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Home, PiggyBank, MessageCircle, User, 
   Lightbulb, LogOut, Settings, UserCircle 
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAuth } from '../AuthContext';
 import './Sidebar.css';
-
-const DropdownMenu = ({ isOpen, onClose, triggerRef }) => {
-  const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    const handleInteraction = (event) => {
-      const clickedOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(event.target);
-      const clickedOutsideTrigger = triggerRef.current && !triggerRef.current.contains(event.target);
-      
-      if (clickedOutsideDropdown && clickedOutsideTrigger) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('click', handleInteraction);
-      document.addEventListener('touchstart', handleInteraction);
-    }
-
-    return () => {
-      document.removeEventListener('click', handleInteraction);
-      document.removeEventListener('touchstart', handleInteraction);
-    };
-  }, [isOpen, onClose, triggerRef]);
-
-  return (
-    <motion.div
-      ref={dropdownRef}
-      className="dropdown"
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ 
-        opacity: isOpen ? 1 : 0,
-        y: isOpen ? 0 : -10
-      }}
-      transition={{ duration: 0.2 }}
-      role="menu"
-      aria-hidden={!isOpen}
-    >
-      <motion.button 
-        whileTap={{ scale: 0.95 }}
-        className="dropdown-item" 
-        onClick={onClose}
-      >
-        <UserCircle size={18} />
-        <span>Profile</span>
-      </motion.button>
-      <motion.button 
-        whileTap={{ scale: 0.95 }}
-        className="dropdown-item" 
-        onClick={onClose}
-      >
-        <Settings size={18} />
-        <span>Settings</span>
-      </motion.button>
-      <motion.button 
-        whileTap={{ scale: 0.95 }}
-        className="dropdown-item" 
-        onClick={onClose}
-      >
-        <LogOut size={18} />
-        <span>Logout</span>
-      </motion.button>
-    </motion.div>
-  );
-};
 
 const NavButton = ({ icon: Icon, label, to }) => {
   const location = useLocation();
@@ -113,24 +49,103 @@ const NavButton = ({ icon: Icon, label, to }) => {
   );
 };
 
-const Sidebar = () => {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownTriggerRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== 'undefined' && window.innerWidth <= 768
-  );
+const DropdownMenu = ({ isOpen, onClose, triggerRef, user }) => {
+  const dropdownRef = useRef(null);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth <= 768;
-      if (mobile !== isMobile) {
-        setIsMobile(mobile);
+    const handleInteraction = (event) => {
+      const clickedOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(event.target);
+      const clickedOutsideTrigger = triggerRef.current && !triggerRef.current.contains(event.target);
+      
+      if (clickedOutsideDropdown && clickedOutsideTrigger) {
+        onClose();
       }
     };
 
+    if (isOpen) {
+      document.addEventListener('click', handleInteraction);
+      document.addEventListener('touchstart', handleInteraction);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('touchstart', handleInteraction);
+    };
+  }, [isOpen, onClose, triggerRef]);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
+
+  return (
+    <motion.div
+      ref={dropdownRef}
+      className="dropdown"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ 
+        opacity: isOpen ? 1 : 0,
+        y: isOpen ? 0 : -10
+      }}
+      transition={{ duration: 0.2 }}
+      role="menu"
+      aria-hidden={!isOpen}
+    >
+      <div className="user-info">
+        <img 
+          src={user?.photoURL || 'https://i.pravatar.cc/40'} 
+          alt={user?.displayName} 
+          className="sidebar-avatar"
+        />
+        <div className="user-details">
+          <span className="user-name">{user?.displayName || 'User'}</span>
+          <span className="user-email">{user?.email}</span>
+        </div>
+      </div>
+
+      <motion.button 
+        whileTap={{ scale: 0.95 }}
+        className="dropdown-item" 
+        onClick={() => navigate('/profile')}
+      >
+        <UserCircle size={18} />
+        <span>Profile</span>
+      </motion.button>
+      <motion.button 
+        whileTap={{ scale: 0.95 }}
+        className="dropdown-item" 
+        onClick={() => navigate('/settings')}
+      >
+        <Settings size={18} />
+        <span>Settings</span>
+      </motion.button>
+      <motion.button 
+        whileTap={{ scale: 0.95 }}
+        className="dropdown-item" 
+        onClick={handleLogout}
+      >
+        <LogOut size={18} />
+        <span>Logout</span>
+      </motion.button>
+    </motion.div>
+  );
+};
+
+const Sidebar = () => {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownTriggerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const { currentUser } = useAuth();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isMobile]);
+  }, []);
 
   return (
     <>
@@ -151,7 +166,7 @@ const Sidebar = () => {
             aria-expanded={showDropdown}
           >
             <motion.img 
-              src="https://i.pravatar.cc/40" 
+              src={currentUser?.photoURL || 'https://i.pravatar.cc/40'} 
               alt="User" 
               animate={{
                 scale: showDropdown ? 1.1 : 1
@@ -163,6 +178,7 @@ const Sidebar = () => {
             isOpen={showDropdown} 
             onClose={() => setShowDropdown(false)}
             triggerRef={dropdownTriggerRef}
+            user={currentUser}
           />
         </div>
       </header>

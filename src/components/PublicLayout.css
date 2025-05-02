@@ -1,0 +1,12 @@
+.public-layout {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+  }
+  
+  .auth-container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding: 2rem;
+  }

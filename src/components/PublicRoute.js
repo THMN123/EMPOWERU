@@ -1,13 +1,13 @@
 import { useAuth } from '../AuthContext';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import LoadingSpinner from './LoadingSpinner';
 
-const PrivateRoute = ({ children }) => {
+const PublicRoute = () => {
   const { currentUser, loading } = useAuth();
 
   if (loading) return <LoadingSpinner fullscreen />;
   
-  return currentUser ? children : <Navigate to="/login" />;
+  return currentUser ? <Navigate to="/" /> : <Outlet />;
 };
 
-export default PrivateRoute;
+export default PublicRoute;

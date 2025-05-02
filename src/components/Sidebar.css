@@ -1,242 +1,285 @@
 :root {
-    --header-height: 60px;
-    --nav-height: 70px;
-    --z-header: 1000;
-    --z-nav: 900;
-    --z-dropdown: 1100;
-    --primary-color: #4c4cff;
-    --bg-color: #1e1e2f;
+  --header-height: 60px;
+  --nav-height: 70px;
+  --z-header: 1000;
+  --z-nav: 900;
+  --z-dropdown: 1100;
+  --primary-color: #4c4cff;
+  --bg-color: #1e1e2f;
+}
+
+/* Base Styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* Header Styles */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: var(--bg-color);
+  z-index: var(--z-header);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.logo h1 {
+  font-size: 1.25rem;
+  margin: 0;
+  color: white;
+}
+
+/* Navigation */
+.app-navigation {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  background-color: var(--bg-color);
+  z-index: var(--z-nav);
+  height: var(--nav-height);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 0 10px;
+}
+
+.app-navigation:not(.mobile) {
+  top: var(--header-height);
+  bottom: auto;
+  right: auto;
+  width: 220px;
+  height: calc(100vh - var(--header-height));
+  flex-direction: column;
+  border-top: none;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  padding: 20px 0;
+}
+
+/* Navigation Buttons */
+.nav-button-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.nav-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.7rem;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 8px 0;
+}
+
+.app-navigation:not(.mobile) .nav-button {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 12px 20px;
+  font-size: 0.9rem;
+}
+
+.nav-button.active {
+  color: white;
+}
+
+.active-indicator {
+  position: absolute;
+  bottom: 5px;
+  width: 5px;
+  height: 5px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--primary-color);
+}
+
+.app-navigation:not(.mobile) .active-indicator {
+  left: 5px;
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+}
+
+/* Avatar Button */
+.avatar-button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.avatar-button img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+/* Dropdown Menu */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background-color: #2a2a3a;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  padding: 8px 0;
+  min-width: 240px;
+  overflow: hidden;
+  z-index: var(--z-dropdown);
+}
+
+.user-info {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+  object-fit: cover;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-email {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.9);
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+/* Animations */
+.nav-button svg {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-button.active svg {
+  color: var(--primary-color);
+  filter: drop-shadow(0 0 8px rgba(76, 76, 255, 0.4));
+}
+
+/* Ripple Effect */
+.nav-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.nav-button:active::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0) translate(-50%, -50%);
+    opacity: 1;
   }
-  
-  /* Base Styles */
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow-x: hidden;
-  }
-  
-  /* Header Styles */
-  .app-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--header-height);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    background-color: var(--bg-color);
-    z-index: var(--z-header);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-  }
-  
-  .logo h1 {
-    font-size: 1.25rem;
-    margin: 0;
-    color: white;
-  }
-  
-  /* Navigation */
-  .app-navigation {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    background-color: var(--bg-color);
-    z-index: var(--z-nav);
-    height: var(--nav-height);
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding: 0 10px;
-  }
-  
-  .app-navigation:not(.mobile) {
-    top: var(--header-height);
-    bottom: auto;
-    right: auto;
-    width: 220px;
-    height: calc(100vh - var(--header-height));
-    flex-direction: column;
-    border-top: none;
-    border-right: 1px solid rgba(255,255,255,0.1);
-    padding: 20px 0;
-  }
-  
-  /* Navigation Buttons */
-  .nav-button-wrapper {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    position: relative;
-  }
-  
-  .nav-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    color: rgba(255,255,255,0.7);
-    text-decoration: none;
-    font-size: 0.7rem;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    padding: 8px 0;
-  }
-  
-  .app-navigation:not(.mobile) .nav-button {
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 12px;
-    padding: 12px 20px;
-    font-size: 0.9rem;
-  }
-  
-  .nav-button.active {
-    color: white;
-  }
-  
-  .active-indicator {
-    position: absolute;
-    bottom: 5px;
-    width: 5px;
-    height: 5px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--primary-color);
-  }
-  
-  .app-navigation:not(.mobile) .active-indicator {
-    left: 5px;
-    top: 50%;
-    bottom: auto;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 20px;
-  }
-  
-  /* Avatar Button */
-  .avatar-button {
-    border: none;
-    background: none;
-    padding: 0;
-    cursor: pointer;
-    border-radius: 50%;
-  }
-  
-  .avatar-button img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block;
-    border: 2px solid rgba(255,255,255,0.2);
-  }
-  
-  /* Dropdown Menu */
-  .dropdown {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    background-color: #2a2a3a;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    padding: 8px 0;
-    min-width: 200px;
-    overflow: hidden;
-    z-index: var(--z-dropdown);
-  }
-  
-  .dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    padding: 12px 16px;
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.9);
-    text-align: left;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background 0.2s;
-  }
-  
-  .dropdown-item:hover {
-    background-color: rgba(255,255,255,0.1);
-  }
-  
-  /* Animations */
-  .nav-button svg {
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-  
-  .nav-button.active svg {
-    color: var(--primary-color);
-    filter: drop-shadow(0 0 8px rgba(76, 76, 255, 0.4));
-  }
-  
-  /* Ripple Effect */
-  .nav-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.2);
+  100% {
+    transform: scale(20, 20) translate(-50%, -50%);
     opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%, -50%);
-    transform-origin: 50% 50%;
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .nav-button span {
+    font-size: 0.65rem;
+    margin-top: 2px;
   }
   
-  .nav-button:active::after {
-    animation: ripple 0.6s ease-out;
+  .app-navigation {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .dropdown {
+    right: 10px;
+  }
+}
+
+/* Safe Area Support */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .app-header {
+    padding-top: env(safe-area-inset-top);
+    height: calc(var(--header-height) + env(safe-area-inset-top));
   }
   
-  @keyframes ripple {
-    0% {
-      transform: scale(0, 0) translate(-50%, -50%);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(20, 20) translate(-50%, -50%);
-      opacity: 0;
-    }
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
-  
-  /* Mobile Adjustments */
-  @media (max-width: 768px) {
-    .nav-button span {
-      font-size: 0.65rem;
-      margin-top: 2px;
-    }
-    
-    .app-navigation {
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-  }
-  
-  /* Safe Area Support */
-  @supports (padding-top: env(safe-area-inset-top)) {
-    .app-header {
-      padding-top: env(safe-area-inset-top);
-      height: calc(var(--header-height) + env(safe-area-inset-top));
-    }
-    
-    body {
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-  }
+}
